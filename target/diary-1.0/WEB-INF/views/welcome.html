@@ -1,0 +1,29 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <script th:src="@{/resources/libs/jquery/js/jquery-3.1.1.min.js}"></script>
+    <link th:href="@{/resources/misc/css/welcome.css}" rel="stylesheet" />
+    <link th:href="@{/resources/diary/css/diary.css}" rel="stylesheet" />
+    <script th:src="@{/resources/libs/cookies/js.cookie.js}"></script>
+    <script th:src="@{/resources/diary/js/prefs_loader.js}"></script>
+</head>
+
+<body>
+    <div class="fix">
+        <main>
+            <section class="top">
+                <h1>Witaj!</h1>
+                <p>Aby przejść dalej musisz się zalogować</p>
+            </section>
+            <section class="bottom">
+                <label>Wybierz metodę logowania:</label>
+                <ul id="login_methods">
+                    <li class="facebook"><a id="facebook_login" th:href="@{signin/facebook}">Facebook</a></li>
+                    <li class="google"><a id="google_login" th:href="@{signin/google}">Google</a></li>
+                </ul>
+            </section>
+        </main>
+    </div>
+</body>
+
+</html>

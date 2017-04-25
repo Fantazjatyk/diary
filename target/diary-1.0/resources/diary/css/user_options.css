@@ -1,0 +1,127 @@
+#user_options_view{
+    position: relative;
+    width:100%;
+    height:100%;
+}
+
+#user_options_view > nav{
+     position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 200px;
+    background: white;
+    border-right: 1px solid;
+    border-color: #ececec;
+}
+
+nav > ul{
+    list-style: none;
+    padding: 0;
+    margin:0;
+    margin:0.5em !important;
+}
+
+.setting-container{
+    display: block;
+    margin-bottom: 1em;
+    margin-top: 1em;
+}
+.info-circle{
+        height: 100px;
+    width: 100px;
+    border-radius: 50%;
+    /* background: red; */
+    border: 2px solid;
+    /* text-align: center; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: xx-large;
+    border-color: var(--theme-color-primary);
+}
+
+#summary .info-circle{
+        margin: 0.5em;
+        margin-right: auto;
+        margin-left: auto;
+}
+
+.setting-title{
+    font-size: larger;
+}
+
+#stats > div{
+    margin:1em;
+}
+#summary main > table{
+    width:100%;
+    text-align: center;
+}
+
+#summary .top{
+    display: flex;
+    align-items: center;
+}
+
+#summary .avatar{
+    max-height: 75px;
+    max-width: 75px;
+}
+#summary #stats{
+   display: flex;
+    justify-content: space-around;
+}
+
+#summary .username-view{
+    text-align: left;
+        margin-left: 0.5em;
+}
+
+#summary .stat-title{
+    font-size: larger;
+}
+.active-tab{
+    background: whitesmoke;
+    border: 1px solid;
+    border-color: #ececec !important;
+}
+
+.tab{
+    padding: 0.5em !important;
+       color: grey !important;
+          font-weight: bold;
+              padding: 0.25em;
+                  border:none;
+                  border:1px solid transparent;
+}
+
+#switch{
+    padding: 1em;
+}
+.tab:hover{
+    background: whitesmoke;
+}
+.deactive-tab{
+
+
+}
+
+nav > ul > li:hover{
+  
+}
+#user_options > nav{
+    
+}
+nav > ul > li{
+list-style: none;
+padding: 0;
+margin:0;
+}
+#user_options_view > main{
+    position: absolute;
+    left:200px;
+    right:0;
+    bottom:0;
+    top:0;
+}

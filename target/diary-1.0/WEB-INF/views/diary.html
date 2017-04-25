@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="htpp://www.thymeleaf.org">
+
+<head>
+    <title>TODO supply a title</title>
+    <meta charset="UTF-8" />
+    <meta th:name="_csrf" th:content="${_csrf.token}" />
+    <meta th:name="_csrf_header" th:content="${_csrf.headerName}" />
+    <link th:href="@{/resources/diary/css/diary.css}" rel="stylesheet" />
+    <link th:href="@{/resources/libs/jquery/css/jquery-ui.min.css}" rel="stylesheet" />
+    <script th:inline="javascript">
+        var initJson = [[${initJson }]];
+    </script>
+    <script th:src="@{/resources/libs/jquery/js/jquery-3.1.1.min.js}"></script>
+    <script th:src="@{/resources/libs/jquery/js/jquery-ui.min.js}"></script>
+    <script th:src="@{/resources/libs/cookies/js.cookie.js}"></script>
+        <script th:src="@{/resources/diary/js/prefs_loader.js}"></script>
+    <script th:src="@{/resources/libs/jquery/plugins/notify/js/notify.min.js}"></script>
+    <script th:src="@{/resources/shared/js/jquery_plugins.js}"></script>
+    <script th:src="@{/resources/libs/moment/js/moment-with-locales.js}"></script>
+    <script th:src="@{/resources/diary/js/diary.js}"></script>
+    <script th:src="@{/resources/diary/js/diary_main.js}"></script>
+    <script th:src="@{/resources/diary/js/user_options.js}"></script>
+    
+
+    <style>
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div th:include="popups::callendar_opener"></div>
+    <div id="diary_main">
+        <div id="toolbar">
+            <div class="fix">
+            <ul id="diary_nav">
+                <li class="stylish-button"><a id="load_main_view">Strona główna</a></li>
+                <li class="stylish-button"><a id="search_for_notes">Szukaj notatek</a></li>
+                <li class="stylish-button"><a href="http://www.michal-szymanski.pl">Autor</a></li>
+            </ul>
+            <div class="user-panel">
+                <ul>
+                <li class="user-avatar-container"><img id="user_avatar" th:src="@{__${avatar}__}"/></li>
+                <li id="user_options" class="small-button stylish-button">Profil</li>
+                <li class="small-button stylish-button"><a th:href="@{logout}" sec:authorize="isAuthenticated()">Wyloguj</a></li>
+                </ul>
+            </div>
+        </div>
+        </div>
+        <div id="diary_container" />
+    </div>
+
+</body>
+
+</html>
