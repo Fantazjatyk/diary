@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2017 Michał Szymański, kontakt: michal.szymanski.aajar@gmail.com.
@@ -27,6 +27,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.BeanDefinition;
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
@@ -38,29 +41,33 @@ import pl.diary.dao.user.UserDetailsExtractor;
  * @author Michał Szymański, kontakt: michal.szymanski.aajar@gmail.com
  */
 @Component
+@Scope(value="request", proxyMode= ScopedProxyMode.TARGET_CLASS)
 public class UserResolver {
 
     @Autowired
     UserDetailsExtractor detailsExtractor;
 
-    private static User loggedUser;
+    private User loggedUser;
 
-    private static UserResolver instance;
+    private boolean isAuthienticated = true;
 
-    public static UserResolver getInstance() {
-        return instance;
+
+    public void logout() {
+        this.isAuthienticated = false;
     }
 
-    public UserResolver() {
-        instance = this;
+    public boolean isAuthenticated() {
+        return this.isAuthienticated;
     }
+
+
 
     public Optional<User> getLoggedUser() {
         String id = null;
         OAuth2Authentication auth = (OAuth2Authentication) SecurityContextHolder.getContext().getAuthentication();
 
         if (loggedUser != null) {
-            if (auth != null && auth.isAuthenticated()) {
+            if (auth != null && this.isAuthenticated()) {
                 return Optional.of(loggedUser);
             }
         }

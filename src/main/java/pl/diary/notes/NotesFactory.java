@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2017 Michał Szymański, kontakt: michal.szymanski.aajar@gmail.com.
@@ -30,34 +30,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 import michal.szymanski.util.Date;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import pl.diary.dao.note.NoteResolver;
 
 /**
  *
 @author Micha� Szyma�ski, kontakt: michal.szymanski.aajar@gmail.com
  */
-@Component
+
 public class NotesFactory {
 
-    @Autowired
-    NoteResolver resolver;
 
-    public Set<Note> createMaxAvaibleDaysMonthMockNotes(int year, int month){
+    public static Set<Note> createMaxAvaibleDaysMonthMockNotes(int year, int month){
         int maxDays = Date.getLastAvaibleDayInMonth(year, month);
         List<Note> result = new ArrayList();
         for(int i = 1; i < maxDays+1; i++){
-            Note note = new Note.Builder()
-                    .content("")
-                    .title("")
-                    .creationDate(year, month, i)
-                    .dateTime(LocalDateTime.now())
-                    .build();
+            Note note = createEmptyNote(year, month, i);
            result.add(note);
         }
         Collections.reverse(result);
@@ -66,23 +54,16 @@ public class NotesFactory {
         return resultSet;
     }
 
-    public Set<Note> createFullMonthNotes(String userId, int year, int month){
-        Set<Note> mocks = createMaxAvaibleDaysMonthMockNotes(year, month);
-        Set<Note> existingNotes = resolver.getNotes(userId, year, month);
-        Map<Integer, Note> map = existingNotes.stream().collect(Collectors.toMap((el)->el.getDay(), (el)->el));
-        Set result = new LinkedHashSet();
-
-
-       mocks.iterator().forEachRemaining((el)->{
-       if(map.containsKey(el.getDay()))
-               result.add(map.get(el.getDay()));
-       else{
-           result.add(el);
-       }
-
-       });
-
-        return result;
+    public static Note createEmptyNote(int year, int month, int day){
+          Note note = new Note.Builder()
+                    .content("")
+                    .title("")
+                    .creationDate(year, month, day)
+                    .dateTime(LocalDateTime.now())
+                    .build();
+          return note;
     }
+
+
 
 }

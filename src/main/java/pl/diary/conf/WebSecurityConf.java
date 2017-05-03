@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2017 Michał Szymański, kontakt: michal.szymanski.aajar@gmail.com.
@@ -48,6 +48,7 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.filter.CompositeFilter;
 import pl.diary.authentication.OAuth2AuthenticationDecorator;
+import pl.diary.authentication.UserCleanerLogoutSuccesHandler;
 
 /**
  *
@@ -75,7 +76,9 @@ public class WebSecurityConf extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(getSignUpsFilters(), BasicAuthenticationFilter.class)
                 .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
                 .and()
-                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login").permitAll();
+
+                .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
+                .deleteCookies("JSESSIONID").invalidateHttpSession(true).logoutSuccessHandler(new UserCleanerLogoutSuccesHandler()).permitAll();
 
     }
 

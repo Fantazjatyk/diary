@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2017 Michał Szymański, kontakt: michal.szymanski.aajar@gmail.com.
@@ -70,11 +70,14 @@ public class NoteInput {
 
     ResponseEntity response;
 
+    @Autowired
+    UserResolver userResolver;
+
     @RequestMapping(value = "/notes/save", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ResponseStatus(value = HttpStatus.CREATED)
     public void handleNoteChange(@RequestBody Note note) throws NoContentException, ClassNotFoundException, SQLException, Exception {
 
-        Optional<User> user = UserResolver.getInstance().getLoggedUser();
+        Optional<User> user = userResolver.getLoggedUser();
         Set errors = validator.validate(note);
         if (errors.isEmpty() && user.isPresent()) {
             note.setAuthorId(user.get().getId());

@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2017 Michał Szymański, kontakt: michal.szymanski.aajar@gmail.com.
@@ -48,6 +48,9 @@ public class DiaryViews {
     @Autowired
     ObjectMapper mapper;
 
+    @Autowired
+    UserResolver resolver;
+
     @RequestMapping(value = "/", method = RequestMethod.GET, produces = "application/json;charset=utf-8")
     public String getDiary(@RequestParam(name = "year", required = false, defaultValue = "0") int year, @RequestParam(name = "month", required = false, defaultValue = "0") int month,
             @RequestParam(name = "day", required = false, defaultValue = "0") int day,
@@ -72,7 +75,7 @@ public class DiaryViews {
         String json = mapper.writeValueAsString(initJson);
         model.addAttribute("initJson", json);
 
-        User user = UserResolver.getInstance().getLoggedUser().get();
+        User user = resolver.getLoggedUser().get();
         model.addAttribute("user", user);
         model.addAttribute("avatar", user.getAvatarUrl());
         return "diary";

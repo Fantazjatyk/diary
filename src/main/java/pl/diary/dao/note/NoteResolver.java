@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2017 Michał Szymański, kontakt: michal.szymanski.aajar@gmail.com.
@@ -23,7 +23,9 @@
  */
 package pl.diary.dao.note;
 
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +38,7 @@ import org.springframework.stereotype.Repository;
 import pl.diary.notes.Note;
 import pl.diary.notes.NoteDateFormatter;
 import pl.diary.notes.NoteMapper;
+import pl.diary.notes.NotesFactory;
 
 /**
  *
@@ -71,6 +74,7 @@ public class NoteResolver {
     @Autowired
     NoteMapper mapper;
 
+
     public Note getNote(String userId, int year, int month, int day) {
         String statement = "select DISTINCT * from notes n inner join notes_details nd on n.note_id = nd.note_id inner join notes_contents nc on n.note_id = nc.note_id where n.user_id = :user_id"
                 + " and n.date = :date";
@@ -80,8 +84,13 @@ public class NoteResolver {
         Note note = null;
         try {
             note = jdbc.queryForObject(statement, params, mapper);
+
         } catch (EmptyResultDataAccessException ex) {
 
+        }
+
+        if(note == null){
+            note = NotesFactory.createEmptyNote(year, month, day);
         }
         return note;
     }
@@ -97,6 +106,25 @@ public class NoteResolver {
         Set<Note> notes = result.stream().collect(Collectors.toSet());
 
         return notes;
+    }
+
+        public Set<Note> getFullMonthNotes(String userId, int year, int month){
+        Set<Note> mocks = NotesFactory.createMaxAvaibleDaysMonthMockNotes(year, month);
+        Set<Note> existingNotes = getNotes(userId, year, month);
+        Map<Integer, Note> map = existingNotes.stream().collect(Collectors.toMap((el)->el.getDay(), (el)->el));
+        Set result = new LinkedHashSet();
+
+
+       mocks.iterator().forEachRemaining((el)->{
+       if(map.containsKey(el.getDay()))
+               result.add(map.get(el.getDay()));
+       else{
+           result.add(el);
+       }
+
+       });
+
+        return result;
     }
 
     public List<Note> getNotesByTitle(String userId, String title) {

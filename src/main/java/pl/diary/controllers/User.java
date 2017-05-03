@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2017 Michał Szymański, kontakt: michal.szymanski.aajar@gmail.com.
@@ -45,9 +45,12 @@ public class User {
     @Autowired
     UserStatisticsExtractor statistics;
 
+    @Autowired
+    UserResolver resolver;
+
     @RequestMapping("/user_options/summary")
     public String getSummary(Model model){
-        pl.diary.authentication.User user = UserResolver.getInstance().getLoggedUser().get();
+        pl.diary.authentication.User user = resolver.getLoggedUser().get();
         model.addAttribute("user", user);
         model.addAttribute("userStats", statistics.getUserStatistics(user.getId()));
         return "summary";

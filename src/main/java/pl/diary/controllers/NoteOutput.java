@@ -1,4 +1,4 @@
-/* 
+/*
  * The MIT License
  *
  * Copyright 2017 Michał Szymański, kontakt: michal.szymanski.aajar@gmail.com.
@@ -38,7 +38,6 @@ import pl.diary.authentication.User;
 import pl.diary.authentication.UserResolver;
 import pl.diary.dao.note.NoteResolver;
 import pl.diary.notes.Note;
-import pl.diary.notes.NotesFactory;
 
 /**
  *
@@ -53,11 +52,14 @@ public class NoteOutput {
     @Autowired
     ObjectMapper mapper;
 
+    @Autowired
+    UserResolver userResolver;
+
     @ResponseBody
     @RequestMapping(value = "/notes/get", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     public String getNote(@RequestParam int year, @RequestParam int month, @RequestParam int day) throws JsonProcessingException {
 
-        Optional<User> user = UserResolver.getInstance().getLoggedUser();
+        Optional<User> user = userResolver.getLoggedUser();
 
         if (!user.isPresent()) {
             return null;
@@ -70,14 +72,11 @@ public class NoteOutput {
         return result;
     }
 
-    @Autowired
-    NotesFactory factory;
-
     @ResponseBody
     @RequestMapping(value = "/notes/get_notes", method = RequestMethod.GET, produces = "application/json; charset=utf-8")
     public String getNotNullInMonth(@RequestParam int year, @RequestParam int month) throws JsonProcessingException, SQLException, ClassNotFoundException {
 
-        Set<Note> notes = factory.createFullMonthNotes(UserResolver.getInstance().getLoggedUser().get().getId(), year, month);
+        Set<Note> notes = resolver.getFullMonthNotes(userResolver.getLoggedUser().get().getId(), year, month);
 
         return mapper.writeValueAsString(notes);
     }
@@ -86,7 +85,7 @@ public class NoteOutput {
     @ResponseBody
     public String searchForNotesByTitles(@RequestParam String title) throws JsonProcessingException {
 
-        String json = mapper.writeValueAsString(resolver.getNotesByTitle(UserResolver.getInstance().getLoggedUser().get().getId(), title));
+        String json = mapper.writeValueAsString(resolver.getNotesByTitle(userResolver.getLoggedUser().get().getId(), title));
         return json;
     }
 
